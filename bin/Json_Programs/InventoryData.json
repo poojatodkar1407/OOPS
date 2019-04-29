@@ -1,0 +1,21 @@
+{"Inventory Data": 
+    [
+	{
+	 	"Inventory Name":"Rice",
+	    "Inventory Weight":5,
+        "Inventory Price": 18
+	},
+    {
+	 	"Inventory Name":"Pulses",
+	    "Inventory Weight":5,
+        "Inventory Price": 15
+	},
+	{
+	 	"Inventory Name":"Wheats",
+	    "Inventory Weight":5,
+        "Inventory Price": 30
+	}
+	
+]
+}
+
