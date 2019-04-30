@@ -18,8 +18,8 @@ import org.json.simple.parser.ParseException;
 public class CommercialStackMethods {
 	Utility utility = new Utility();
 	Scanner scanner = new Scanner(System.in);
-	private String companyFilePath =("/home/admin1/Desktop/bridgelab/Company.json");
-	private String userFilePath = ("/home/admin1/Desktop/bridgelab/Userstock.json ");
+	private String companyFilePath =("/home/admin1/eclipse-workspace/ObjectOriented_json/Company.json");
+	private String userFilePath = ("/home/admin1/eclipse-workspace/ObjectOriented_json/UserStock.json");
 	private Company companyPojo = new Company();
 	CommercialStackLLMethods stack ;
 	CommercialQueueMethods queue;
