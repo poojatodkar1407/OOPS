@@ -115,11 +115,12 @@ public class Utility {
 		}
 	}
 	
-	public static void writeToJsonFile(String jsonString, String path) throws IOException {
+	/*public static void writeToJsonFile(String jsonString, String path) throws IOException {
 		FileWriter fileWriter = new FileWriter(path);
 		BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 		bufferedWriter.write(jsonString);
-		bufferedWriter.close();
-}
+		bufferedWriter.close();*/
+
+
 
 }

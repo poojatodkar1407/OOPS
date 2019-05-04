@@ -34,7 +34,6 @@ public class Expression {
 		String mobileNo = sc.next();
 
 		if (Pattern.matches("[789][0-9]{9}", mobileNo))
-			;
 		{
 			bio = bio.replaceAll("x{10}", mobileNo);
 		}

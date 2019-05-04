@@ -2,40 +2,33 @@ package Json_Programs;
 
 import java.io.Serializable;
 
-public class Rice implements Serializable{
-	
+public class Rice implements Serializable {
 
 	private String name;
 	private double price;
 	private int weight;
-	
-	public String getName()
-	{
+
+	public String getName() {
 		return name;
 	}
-	
-	public void setName(String name)
-	{
+
+	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public double getPrice()
-	{
+
+	public double getPrice() {
 		return price;
 	}
-	
-	public void setPrice(double price)
-	{
+
+	public void setPrice(double price) {
 		this.price = price;
 	}
-	
-	public int getWeight()
-	{
+
+	public int getWeight() {
 		return weight;
 	}
-	
-	public void setWeight(int weight)
-	{
+
+	public void setWeight(int weight) {
 		this.weight = weight;
 	}
 

@@ -3,6 +3,10 @@ package com.bridgeit.objectOrientedPrograms;
 import java.io.Serializable;
 
 public class Stock implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String Stock_Name;
 	private int Number_of_Share;
 	private double Share_Price;
