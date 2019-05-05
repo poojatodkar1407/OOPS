@@ -1,22 +1,22 @@
-package Commercial_data_processing;
+package commercialdataprocessing;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Scanner;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-
+import Json_Programs.Utility;
 
 public class CommercialStackMethods {
-	Utility utility = new Utility();
+	CommercialUtility utility = new CommercialUtility();
 	Scanner scanner = new Scanner(System.in);
 	private String companyFilePath =("/home/admin1/eclipse-workspace/ObjectOriented_json/Company.json");
 	private String userFilePath = ("/home/admin1/eclipse-workspace/ObjectOriented_json/UserStock.json");
@@ -27,7 +27,7 @@ public class CommercialStackMethods {
 	public void addDetails() throws ParseException, IOException 
 	{
 		System.out.println("Enter Whose details you want to add\n1.Company Stock\t2.User Deatils");
-		int choice = utility.inputinteger();
+		int choice = utility.inputInteger();
 		switch(choice)
 		{
 		case 1:
@@ -67,7 +67,7 @@ public class CommercialStackMethods {
 		
 		System.out.println("Enter no. of share : ");
 		String noOfShare = utility.inputString();
-		companyPojo.setNoOfShare(noOfShare);
+		companyPojo.setNoOFShare(noOfShare);
 		
 		System.out.println("Enter share Price : ");
 		String sharePrice = utility.inputString();
@@ -88,7 +88,7 @@ public class CommercialStackMethods {
 		JSONObject simple = new JSONObject();
 		simple.put("StockName",companyPojo.getStockName());
 		simple.put("StockSymbol", companyPojo.getStockSymbol());
-		simple.put("NoOfShare", companyPojo.getNoOfShare());
+		simple.put("NoOfShare", companyPojo.getNoOFShare());
 		simple.put("SharePrice", companyPojo.getSharePrice());
 		jsonArray.add(simple);
 		jsonObj.put("StockDetails", jsonArray);
@@ -109,7 +109,7 @@ public class CommercialStackMethods {
 	
 	public void addUser() throws ParseException, IOException 
 	{
-		User userPojo = new User();
+		UserPojo userPojo = new UserPojo();
 		File file = new File(userFilePath);
 		System.out.println("Enter User name : ");
 		String userName = utility.inputString();
@@ -117,11 +117,11 @@ public class CommercialStackMethods {
 				
 		System.out.println("Enter no. of share : ");
 		String noOfShare = utility.inputString();
-		userPojo.setNoOfShare(noOfShare);
+		userPojo.setNoOfShares(noOfShare);
 		
 		System.out.println("Enter share price : ");
 		String sharePrice = utility.inputString();
-		userPojo.setSharePrice(sharePrice);					
+		userPojo.setPrice(sharePrice);					
 		try {
 			createUserJsonObj(userPojo ,file);
 		} catch (Exception e) {
@@ -130,7 +130,7 @@ public class CommercialStackMethods {
 		}
 	}	
 	@SuppressWarnings("unchecked")
-	public void createUserJsonObj(User userPojo , File file) throws ParseException, IOException 
+	public void createUserJsonObj(UserPojo userPojo , File file) throws ParseException, IOException 
 	{
 		JSONParser parser = new JSONParser();		 
 		JSONObject jsonObj = (JSONObject)parser.parse(new FileReader(file));
@@ -138,7 +138,7 @@ public class CommercialStackMethods {
 		JSONObject simple = new JSONObject();
 		simple.put("UserName",userPojo.getUserName());
 		simple.put("NoOfShare", userPojo.getNoOfShares());
-		simple.put("SharePrice", userPojo.getSharePrice());
+		simple.put("SharePrice", userPojo.getPrice());
 		jsonArray.add(simple);
 		jsonObj.put("UserDetails", jsonArray);
 		System.out.println(jsonObj);
@@ -146,7 +146,7 @@ public class CommercialStackMethods {
 	}	
 
 	@SuppressWarnings("unchecked")
-	public void buyStock() throws ParseException, IOException 
+	public void buyStock() throws ParseException, IOException , NullPointerException
 	{
 		stack = new CommercialStackLLMethods();
 		queue = new CommercialQueueMethods();
@@ -178,7 +178,9 @@ public class CommercialStackMethods {
 					System.out.println(compareObj1);
 				}
 				System.out.println("Enter Stock Name from above list ");
-				String stockName = utility.inputString();
+				
+				String stockName = scanner.next();
+				System.out.println(stockName);
 				for(i=0 ; i<array1.size();i++)
 				{
 					compareObj1 = (JSONObject)array1.get(i);
@@ -186,13 +188,14 @@ public class CommercialStackMethods {
 					{
 						System.out.println(compareObj1);
 						System.out.println("Enter how many stocks you want to buy");
-						int stocksToBuy = utility.inputinteger();
-						
-						int companyIntStocks = Integer.parseInt(compareObj1.get("NoOfShare").toString());
+						int stocksToBuy = scanner.nextInt();
+						System.out.println("entering");
+						int companyIntStocks = Integer.parseInt( compareObj1.get("NoOfShare").toString());
+						System.out.println("entering");
 						int userIntStocks = Integer.parseInt(compareObj2.get("NoOfShare").toString());
 						int userSharePrice = Integer.parseInt(compareObj2.get("SharePrice").toString());
 						int companySharePrice = Integer.parseInt(compareObj1.get("SharePrice").toString());
-						
+						System.out.println("entering");
 						int newUserShares = userIntStocks + stocksToBuy;
 						int newCompanyShares = companyIntStocks - stocksToBuy;
 						
@@ -200,7 +203,7 @@ public class CommercialStackMethods {
 						int newStockCalculation = (priceOfEachShare * stocksToBuy);
 						int newComapnySharePrice=  companySharePrice + newStockCalculation ;						
 						int newUserSharePrice = userSharePrice - newStockCalculation;
-						
+						System.out.println("entering");
 						if(companyIntStocks > stocksToBuy && userSharePrice > newStockCalculation)
 						{						
 							compareObj1.remove("NoOfShare");
@@ -222,7 +225,7 @@ public class CommercialStackMethods {
 	                        String date = new SimpleDateFormat("E yyyy.MM.dd 'at' hh:mm:ss a").format(dateObj);
 	                        System.out.println("Shares Buy Date & Time : " + date);
 	                        
-	                        JSONObject obj ;
+	                       JSONObject obj ;
 	                		for(i = 0 ; i< array1.size();i++)
 	                		{
 	                			obj = (JSONObject)array1.get(i);
@@ -241,7 +244,7 @@ public class CommercialStackMethods {
 					}
 				}
 			}
-		}		
+					}	
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -285,7 +288,7 @@ public class CommercialStackMethods {
 					{
 						System.out.println(compareObj1);						
 						System.out.println("How many shares you wants to sell ? ");
-						int sellShares = utility.inputinteger();
+						int sellShares = utility.inputInteger();
 						
 						int companyIntStocks = Integer.parseInt(compareObj1.get("NoOfShare").toString());
 						int userIntStocks = Integer.parseInt(compareObj2.get("NoOfShare").toString());
@@ -344,7 +347,7 @@ public class CommercialStackMethods {
 	public void printReport() throws ParseException, IOException 
 	{
 		System.out.println("Whose data you want to see\n1. Company\t2. User");
-		int reportchoice = utility.inputinteger();
+		int reportchoice = utility.inputInteger();
 		switch (reportchoice) 
 		{
 		case 1:
@@ -382,6 +385,5 @@ public class CommercialStackMethods {
 		JSONObject jsonObj = (JSONObject)parser.parse(new FileReader(file));
 		JSONArray array = (JSONArray)jsonObj.get("UserDetails");
 		System.out.println(array);
-	}
 }
-
+}

@@ -1,4 +1,4 @@
-package Commercial_data_processing;
+package commercialdataprocessing;
 
 import java.io.File;
 import java.io.FileReader;
@@ -13,32 +13,45 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class CommercialLLMethods {
-	Utility utility = new Utility();
-	LinkedList list ;
-	LinkedList list1 ;
+import Json_Programs.Utility;
+
+public class StockMethods {
+	CommercialUtility utility = new CommercialUtility();
 	Scanner scanner = new Scanner(System.in);
-	String companyFilePath =("/home/admin1/eclipse-workspace/ObjectOriented_json/Company.json");
-	String userFilePath = ("/home/admin1/eclipse-workspace/ObjectOriented_json/UserStock.json");
-	Company companyPojo = new Company();
-	public void addDetails() throws Exception
+	private String companyFilePath =("/home/admin1/eclipse-workspace/ObjectOriented_json/Company.json");
+	private String userFilePath = ("/home/admin1/eclipse-workspace/ObjectOriented_json/UserStock.json");
+	private Company companyPojo = new Company();
+	
+	public void addDetails() throws ParseException, IOException 
 	{
-		System.out.println("Enter Whose details you want to add\n1.Company Stock\t2.User Deatils");
-		int choice = utility.inputinteger();
+		System.out.println("Enter your choice");
+		System.out.println("Press 1 : To create account of company");
+		System.out.println("Press 2 : To create account of user");
+		int choice = utility.inputInteger();
 		switch(choice)
 		{
-			case 1:
-				addStockDetails();				
-				break;
-			case 2:
+		case 1:
+			try {
+				addStockDetails();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}				
+			break;
+		case 2:
+			try {
 				addUser();
-				break;
-			default:
-				System.out.println("Invalid choice...!!!");
-				System.out.println("Do you wants to enter again...(Y/N)");
-				char ch = scanner.next().charAt(0);
-				if(ch == 'Y' || ch == 'y')
-					addDetails();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+		default:
+			System.out.println("Invalid choice...!!!");
+			System.out.println("Do you wants to enter again...(Y/N)");
+			char ch = scanner.next().charAt(0);
+			if(ch == 'Y' || ch == 'y')
+				addDetails();
 		}
 	}	
 	public void addStockDetails() throws ParseException, IOException 
@@ -54,25 +67,29 @@ public class CommercialLLMethods {
 		
 		System.out.println("Enter no. of share : ");
 		String noOfShare = utility.inputString();
-		companyPojo.setNoOfShare(noOfShare);
+		companyPojo.setNoOFShare(noOfShare);
 		
 		System.out.println("Enter share Price : ");
 		String sharePrice = utility.inputString();
 		companyPojo.setSharePrice(sharePrice);		
-		createCompanyJsonObj(companyPojo ,file);
+		try {
+			createCompanyJsonObj(companyPojo ,file);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	@SuppressWarnings("unchecked")
-	public void createCompanyJsonObj(Company companyPojo ,File file) throws ParseException, IOException 
+	public void createCompanyJsonObj(Company companyPojo , File file) throws ParseException, IOException 
 	{
-		Company company = new Company();
 		JSONParser parser = new JSONParser();		 
 		JSONObject jsonObj = (JSONObject)parser.parse(new FileReader(file));
 		JSONArray jsonArray =(JSONArray)jsonObj.get("StockDetails");
 		JSONObject simple = new JSONObject();
-		simple.put("StockName",company.getStockName());
-		simple.put("StockSymbol", company.getStockSymbol());
-		simple.put("NoOfShare", company.getNoOfShare());
-		simple.put("SharePrice", company.getSharePrice());
+		simple.put("StockName",companyPojo.getStockName());
+		simple.put("StockSymbol", companyPojo.getStockSymbol());
+		simple.put("NoOfShare", companyPojo.getNoOFShare());
+		simple.put("SharePrice", companyPojo.getSharePrice());
 		jsonArray.add(simple);
 		jsonObj.put("StockDetails", jsonArray);
 		System.out.println(jsonObj);
@@ -83,16 +100,16 @@ public class CommercialLLMethods {
 			e.printStackTrace();
 		}		
 	}
-	private void writeIntoFile(JSONObject jsonObj2 , String filePath)  throws ParseException, IOException {
+	private void writeIntoFile(JSONObject jsonObj2 , String filePath) throws ParseException, IOException  {
 		File file = new File(filePath);
 		FileWriter writer = new FileWriter(file);
 		writer.write(jsonObj2.toString());
 		writer.flush();
 	}	
 	
-	public void addUser()throws ParseException, IOException 
+	public void addUser() throws ParseException, IOException 
 	{
-		User userPojo = new User();
+		UserPojo userPojo = new UserPojo();
 		File file = new File(userFilePath);
 		System.out.println("Enter User name : ");
 		String userName = utility.inputString();
@@ -100,11 +117,11 @@ public class CommercialLLMethods {
 				
 		System.out.println("Enter no. of share : ");
 		String noOfShare = utility.inputString();
-		userPojo.setNoOfShare(noOfShare);
+		userPojo.setNoOfShares(noOfShare);
 		
 		System.out.println("Enter share price : ");
 		String sharePrice = utility.inputString();
-		userPojo.setSharePrice(sharePrice);					
+		userPojo.setPrice(sharePrice);					
 		try {
 			createUserJsonObj(userPojo ,file);
 		} catch (Exception e) {
@@ -113,7 +130,7 @@ public class CommercialLLMethods {
 		}
 	}	
 	@SuppressWarnings("unchecked")
-	public void createUserJsonObj(User userPojo , File file) throws ParseException, IOException 
+	public void createUserJsonObj(UserPojo userPojo , File file) throws ParseException, IOException 
 	{
 		JSONParser parser = new JSONParser();		 
 		JSONObject jsonObj = (JSONObject)parser.parse(new FileReader(file));
@@ -121,7 +138,7 @@ public class CommercialLLMethods {
 		JSONObject simple = new JSONObject();
 		simple.put("UserName",userPojo.getUserName());
 		simple.put("NoOfShare", userPojo.getNoOfShares());
-		simple.put("SharePrice", userPojo.getSharePrice());
+		simple.put("SharePrice", userPojo.getPrice());
 		jsonArray.add(simple);
 		jsonObj.put("UserDetails", jsonArray);
 		System.out.println(jsonObj);
@@ -129,7 +146,7 @@ public class CommercialLLMethods {
 	}	
 
 	@SuppressWarnings("unchecked")
-	public void buyStock()throws ParseException, IOException 
+	public void buyStock() throws ParseException, IOException 
 	{
 		File file1 = new File(companyFilePath);
 		JSONParser parser1 = new JSONParser();
@@ -167,14 +184,13 @@ public class CommercialLLMethods {
 					{
 						System.out.println(compareObj1);
 						System.out.println("Enter how many stocks you want to buy");
-						int stocksToBuy = utility.inputinteger();
+						int stocksToBuy = utility.inputInteger();
 						
 						int companyIntStocks = Integer.parseInt(compareObj1.get("NoOfShare").toString());
 						int userIntStocks = Integer.parseInt(compareObj2.get("NoOfShare").toString());
 						int userSharePrice = Integer.parseInt(compareObj2.get("SharePrice").toString());
 						int companySharePrice = Integer.parseInt(compareObj1.get("SharePrice").toString());
-						String stockSymbol = compareObj1.get("StockSymbol").toString();
-
+						
 						int newUserShares = userIntStocks + stocksToBuy;
 						int newCompanyShares = companyIntStocks - stocksToBuy;
 						
@@ -182,7 +198,6 @@ public class CommercialLLMethods {
 						int newStockCalculation = (priceOfEachShare * stocksToBuy);
 						int newComapnySharePrice=  companySharePrice + newStockCalculation ;						
 						int newUserSharePrice = userSharePrice - newStockCalculation;
-						
 						
 						if(companyIntStocks > stocksToBuy && userSharePrice > newStockCalculation)
 						{						
@@ -213,42 +228,9 @@ public class CommercialLLMethods {
 		writeIntoFile(jsonObj2, userFilePath);
 	}
 	
-	public void linkedlist() throws ParseException, IOException 
-	{
-		list = new LinkedList();
-		list1 = new LinkedList();
-				
-		File file1 = new File(companyFilePath);
-		JSONParser parser1 = new JSONParser();
-		JSONObject jsonObj1 = (JSONObject)parser1.parse(new FileReader(file1));
-		JSONArray array1 = (JSONArray)jsonObj1.get("StockDetails");
-		
-		File file2 = new File(userFilePath);
-		JSONParser parser2 = new JSONParser();
-		JSONObject jsonObj2 = (JSONObject)parser2.parse(new FileReader(file2));
-		JSONArray array2 = (JSONArray)jsonObj2.get("UserDetails");
-		
-		JSONObject obj;
-		for(int i=0;i<array1.size();i++) 
-		{
-			obj = (JSONObject)array1.get(i);
-			String str = obj.get("NoOfShare").toString();
-			list.insert(str);
-		}	
-		list.show();
-		
-		for(int i = 0;i<array2.size();i++)
-		{
-			obj = (JSONObject)array2.get(i);
-			String str = obj.get("NoOfShare").toString();
-			list1.insert(str);
-		}
-		list1.show();
-	}
-	
 	@SuppressWarnings("unchecked")
-	public void sellStock()throws ParseException, IOException 
-	{		
+	public void sellStock() throws ParseException, IOException 
+	{
 		File file1 = new File(companyFilePath);
 		JSONParser parser1 = new JSONParser();
 		JSONObject jsonObj1 = (JSONObject)parser1.parse(new FileReader(file1));
@@ -268,7 +250,7 @@ public class CommercialLLMethods {
 			compareObj2 = (JSONObject)array2.get(i);
 			if(compareObj2.get("UserName").equals(userName))
 			{
-				//isUserPresent = true;
+				
 				System.out.print(compareObj2);
 				System.out.println("\nFollowing is available stock list");
 				for(i=0 ; i<array1.size();i++)
@@ -283,11 +265,10 @@ public class CommercialLLMethods {
 					compareObj1 = (JSONObject)array1.get(i);
 					if(compareObj1.get("StockName").equals(stockName))
 					{
-						//isStockPresent = true;
-						System.out.println(compareObj1);	
 						
+						System.out.println(compareObj1);						
 						System.out.println("How many shares you wants to sell ? ");
-						int sellShares = utility.inputinteger();
+						int sellShares = utility.inputInteger();
 						
 						int companyIntStocks = Integer.parseInt(compareObj1.get("NoOfShare").toString());
 						int userIntStocks = Integer.parseInt(compareObj2.get("NoOfShare").toString());
@@ -324,33 +305,36 @@ public class CommercialLLMethods {
 					}
 				}	
 			}
-		}		
-	}	
+		}
+		
+		writeIntoFile(jsonObj1, companyFilePath);
+		writeIntoFile(jsonObj2, userFilePath);
+	}
+	
 	public void printReport() throws ParseException, IOException 
 	{
-		CommercialLLMethods stock = new CommercialLLMethods();
 		System.out.println("Whose data you want to see\n1. Company\t2. User");
-		int reportchoice = utility.inputinteger();
+		int reportchoice = utility.inputInteger();
 		switch (reportchoice) 
 		{
 		case 1:
 			try {
-				stock.printCompanyReport();
+				printCompanyReport();
 			} catch (Exception e) {
-				
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}						
 			break;
 		case 2:
 			try {
-				stock.printUserReport();
+				printUserReport();
 			} catch (Exception e) {
-			
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			break;
 		default:
-			System.out.println("Invalid choice");
+			break;
 		}		
 	}
 	public void  printCompanyReport() throws ParseException, IOException 
@@ -368,7 +352,5 @@ public class CommercialLLMethods {
 		JSONObject jsonObj = (JSONObject)parser.parse(new FileReader(file));
 		JSONArray array = (JSONArray)jsonObj.get("UserDetails");
 		System.out.println(array);
-	}
-	
 }
-
+}

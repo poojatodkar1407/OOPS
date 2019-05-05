@@ -1,4 +1,4 @@
-package Commercial_data_processing;
+package commercialdataprocessing;
 
 public class LinkedList {
 	public Node head;
